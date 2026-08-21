@@ -32,4 +32,3 @@
 
 - **补齐网盘链接**：在 `marvel_guide.html` 内搜索 `quarkData`，按电影 id 添加一行链接即可，顶部徽章的收录计数会自动更新（如 `26: "https://pan.quark.cn/s/xxxx"`）
 - **更新豆瓣信息**：同样方式修改 `doubanData` 对象
-- `file_sources.md` 为网盘链接的来源底稿，仅本地维护用，不纳入 git 跟踪
