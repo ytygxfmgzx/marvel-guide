@@ -1,0 +1,7 @@
+# 白名单模式：忽略目录下所有文件
+/*
+
+# 仅跟踪以下文件
+!.gitignore
+!README.md
+!marvel_guide.html

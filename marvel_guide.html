@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>漫威宇宙探险指南 | Marvel MCU Explorer</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f7fc;
+            --card-bg: #ffffff;
+            --primary: #ff3b30;
+            --primary-hover: #e02d22;
+            --accent-blue: #007aff;
+            --accent-yellow: #ffcc00;
+            --accent-purple: #af52de;
+            --text-dark: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border-radius: 18px;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            padding-bottom: 60px;
+            line-height: 1.6;
+        }
+
+        /* 顶部 Header */
+        header {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 40px 20px 30px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 20px rgba(255, 65, 108, 0.2);
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Fredoka One', 'Noto Sans SC', cursive;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto 20px;
+        }
+
+        /* 控制与仪表盘 */
+        .dashboard-container {
+            max-width: 1100px;
+            margin: -25px auto 30px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px 25px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: #f0f3f8;
+            padding: 4px;
+            border-radius: 30px;
+        }
+
+        .mode-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background: var(--card-bg);
+            color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .overall-progress {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar-bg {
+            background: #eef2f7;
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #36d1dc, #5b86e5);
+            height: 100%;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        /* 无限宝石搜寻面板 */
+        .stones-panel {
+            max-width: 1100px;
+            margin: 0 auto 30px;
+            padding: 0 20px;
+        }
+
+        .stones-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 15px 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .stones-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .stones-list {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .stone-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            opacity: 0.4;
+            transition: all 0.3s;
+        }
+
+        .stone-tag.unlocked {
+            opacity: 1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .stone-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* 主体内容布局 */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .phase-section {
+            margin-bottom: 40px;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .phase-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .phase-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        /* 电影卡片 */
+        .movie-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 2px solid transparent;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: #e2e8f0;
+        }
+
+        .movie-card.watched {
+            background: #f4fbf7;
+            border-color: #a3e635;
+        }
+
+        .movie-card.kids-highlight {
+            border-color: var(--accent-yellow);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .movie-num {
+            background: #f0f3f8;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .kids-tag {
+            background: #fff9db;
+            color: #f59f00;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            border: 1px solid #ffe066;
+        }
+
+        .movie-title-cn {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .movie-title-en {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .movie-tagline {
+            font-size: 0.85rem;
+            color: #4a5568;
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .btn-check {
+            background: #edf2f7;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .movie-card.watched .btn-check {
+            background: #22c55e;
+            color: white;
+        }
+
+        .btn-detail {
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .card-top-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rating-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 9px;
+            border-radius: 11px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-decoration: none;
+            line-height: 1.4;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            white-space: nowrap;
+        }
+        .rating-badge:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+        .rating-badge.high  { background: #e7f8ee; color: #15803d; border: 1px solid #86efac; }
+        .rating-badge.mid   { background: #fff4e6; color: #c2410c; border: 1px solid #fdba74; }
+        .rating-badge.low   { background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
+        .rating-badge.empty { background: #fffbeb; color: #b45309; border: 1px dashed #fcd34d; }
+
+        /* Header 资源徽章 */
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            color: white;
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            margin-top: 16px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* 卡片/弹窗通用观看主按钮 */
+        .btn-watch {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 9px 12px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            text-decoration: none;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-watch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 65, 108, 0.45);
+            color: white;
+        }
+        .btn-watch.pending {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            border: 1px dashed #cbd5e1;
+            box-shadow: none;
+            cursor: default;
+            font-weight: 700;
+        }
+        .btn-watch.pending:hover { transform: none; box-shadow: none; }
+
+        .modal-block.watch-block { border-color: var(--primary); }
+        .modal-block.watch-block .watch-tip {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: -4px;
+            line-height: 1.5;
+        }
+
+        .modal-block.douban { border-color: #15803d; }
+        .modal-block.douban .db-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .modal-block.douban .db-rating {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #15803d;
+        }
+        .modal-block.douban .db-rating.pending {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #b45309;
+        }
+        .modal-block.douban .db-link {
+            color: var(--accent-blue);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .modal-block.douban .db-link:hover { text-decoration: underline; }
+        .modal-block.douban .db-link.pending { color: var(--text-muted); cursor: default; }
+
+        /* Modal 弹窗 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f1f3f5;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .modal-header h2 {
+            font-size: 1.6rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .modal-header .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .modal-block {
+            background: #f8fafc;
+            padding: 15px 18px;
+            border-radius: 14px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .modal-block.key-point { border-color: var(--primary); }
+        .modal-block.easter-egg { border-color: var(--accent-yellow); }
+
+        .modal-block h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .modal-block p {
+            font-size: 0.9rem;
+            color: #475569;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            .dashboard-card { flex-direction: column; align-items: stretch; }
+            .movie-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>漫威宇宙探险指南</h1>
+        <p>不走弯路的逻辑观影顺序 · 让故事像完整史诗般展开</p>
+        <div class="hero-badge">🎬 已收录 <span id="hero-watch-count">26</span> / 28 部夸克网盘片源</div>
+    </header>
+
+    <!-- 顶部控制台 & 进度 -->
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="btn-full" onclick="setMode('full')">全景观影路线 (28部+)</button>
+                <button class="mode-btn" id="btn-kids" onclick="setMode('kids')">⭐ 10岁儿童精简路线 (12部)</button>
+            </div>
+            <div class="overall-progress">
+                <div class="progress-header">
+                    <span>观影进度</span>
+                    <span id="progress-text">0 / 23</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 无限宝石搜寻器 -->
+    <div class="stones-panel">
+        <div class="stones-card">
+            <div class="stones-title">💎 无限宝石搜寻记录：</div>
+            <div class="stones-list">
+                <div class="stone-tag" id="stone-space"><span class="stone-icon" style="background:#007aff;"></span>空间宝石 (蓝色)</div>
+                <div class="stone-tag" id="stone-mind"><span class="stone-icon" style="background:#ffcc00;"></span>心灵宝石 (黄色)</div>
+                <div class="stone-tag" id="stone-reality"><span class="stone-icon" style="background:#ff3b30;"></span>现实宝石 (红色)</div>
+                <div class="stone-tag" id="stone-power"><span class="stone-icon" style="background:#af52de;"></span>力量宝石 (紫色)</div>
+                <div class="stone-tag" id="stone-time"><span class="stone-icon" style="background:#34c759;"></span>时间宝石 (绿色)</div>
+                <div class="stone-tag" id="stone-soul"><span class="stone-icon" style="background:#ff9500;"></span>灵魂宝石 (橙色)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 电影列表主体 -->
+    <main id="movie-content">
+        <!-- JS 动态注入内容 -->
+    </main>
+
+    <!-- 详情弹窗 -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal(null, true)">✕</button>
+            <div class="modal-header">
+                <h2 id="modal-title">电影名称</h2>
+                <div class="subtitle" id="modal-subtitle">英文名 · 上映年份</div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-block watch-block" id="modal-watch-block">
+                    <h4>☁ 夸克网盘片源</h4>
+                    <a id="modal-watch-link" class="btn-watch" target="_blank" rel="noopener">打开夸克网盘 · 转存后观看 ➔</a>
+                    <p class="watch-tip">点击进入夸克分享页，把影片保存到你的网盘即可在线观看或下载</p>
+                    <p id="modal-watch-pending" style="display:none; font-size:0.85rem; color:var(--text-muted);">⏳ 片源整理中，敬请期待</p>
+                </div>
+                <div class="modal-block douban" id="modal-douban-block">
+                    <h4>🎬 豆瓣</h4>
+                    <div class="db-row">
+                        <span id="modal-douban-rating"></span>
+                        <a id="modal-douban-link" target="_blank" rel="noopener"></a>
+                    </div>
+                </div>
+                <div class="modal-block">
+                    <h4>📍 宇宙定位与主题</h4>
+                    <p id="modal-position"></p>
+                </div>
+                <div class="modal-block key-point">
+                    <h4>💡 必看关键线索</h4>
+                    <p id="modal-focus"></p>
+                </div>
+                <div class="modal-block easter-egg">
+                    <h4>🥚 重点关注彩蛋</h4>
+                    <p id="modal-egg"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const moviesData = [
+            // 第一阶段
+            {
+                id: 1, phase: 1, phaseName: "第一阶段：英雄诞生（认识这个世界）",
+                title: "钢铁侠", enTitle: "Iron Man (2008)", kids: true, stone: null,
+                tagline: "漫威宇宙的开山之作。看傲慢的天才托尼·史塔克经历蜕变。",
+                position: "漫威宇宙的“第一章”，奠定现实科技基调。",
+                focus: "钢铁侠Mark战甲演变、胸前方舟反应炉、神盾局（S.H.I.E.L.D.）的首次浮出水面。",
+                egg: "片尾尼克·弗瑞局长现身：“你以为你是唯一的超级英雄吗？”——正式开启复仇者联盟计划。"
+            },
+            {
+                id: 2, phase: 1, phaseName: "第一阶段：英雄诞生（认识这个世界）",
+                title: "无敌浩克", enTitle: "The Incredible Hulk (2008)", kids: false, stone: null,
+                tagline: "介绍超级士兵实验基因的延续与绿巨人浩克。",
+                position: "探索基因生物学与超级士兵血清的联系。",
+                focus: "浩克力量的来源与二战美队超级士兵计划有关；史塔克工业参与军事合作。",
+                egg: "片尾托尼·史塔克在酒吧与罗斯将军接触，暗示正在组建团队。"
+            },
+            {
+                id: 3, phase: 1, phaseName: "第一阶段：英雄诞生（认识这个世界）",
+                title: "钢铁侠2", enTitle: "Iron Man 2 (2010)", kids: false, stone: null,
+                tagline: "扩张世界观，正式引入神盾局与更多角色。",
+                position: "托尼发现世界比自己想象的大，开始承上启下。",
+                focus: "黑寡妇高光首次亮相、托尼合成新元素、美队盾牌原型现身实验室。",
+                egg: "片尾神盾局特工在纽西兰荒漠发现掉落的“雷神之锤”。"
+            },
+            {
+                id: 4, phase: 1, phaseName: "第一阶段：英雄诞生（认识这个世界）",
+                title: "雷神", enTitle: "Thor (2011)", kids: true, stone: "space",
+                tagline: "第一次打开“宇宙神话世界”，认识阿斯加德与洛基。",
+                position: "打破现实科技维度，引入神话与外星文明。",
+                focus: "洛基的复杂性格（漫威最重要的推动者之一）、鹰眼首次客串。",
+                egg: "片尾局长向沙维格博士展示“宇宙魔方”（空间宝石首次正式登场）。"
+            },
+            {
+                id: 5, phase: 1, phaseName: "第一阶段：英雄诞生（认识这个世界）",
+                title: "美国队长：复仇者先锋", enTitle: "Captain America: The First Avenger (2011)", kids: true, stone: "space",
+                tagline: "补充漫威历史，认识精神核心二战英雄美队。",
+                position: "宇宙精神核心的奠基，交代关键神器“宇宙魔方”的历史。",
+                focus: "美国队长的品格、九头蛇（Hydra）组织、钢铁侠父亲霍华德·史塔克。",
+                egg: "美队在现代纽约醒来，尼克·弗瑞告知他“你睡了整整70年”。"
+            },
+            {
+                id: 6, phase: 1, phaseName: "第一阶段：英雄诞生（认识这个世界）",
+                title: "复仇者联盟", enTitle: "The Avengers (2012)", kids: true, stone: "mind",
+                tagline: "第一次大集合！英雄从冲突走向团队联手。",
+                position: "第一阶段大高潮。让孩子理解之前的独立电影都是在搭积木。",
+                focus: "齐塔瑞权杖（内心藏着心灵宝石）、纽约大战中团队的默契形成。",
+                egg: "幕后黑手灭霸（Thanos）首次回眸露脸，露出邪魅一笑。"
+            },
+
+            // 第二阶段
+            {
+                id: 7, phase: 2, phaseName: "第二阶段：世界扩大（英雄也会犯错）",
+                title: "钢铁侠3", enTitle: "Iron Man 3 (2013)", kids: false, stone: null,
+                tagline: "英雄失去装备后还是英雄吗？托尼的 PTSD 与自我救赎。",
+                position: "纽约大战后英雄的心理创伤与成长。",
+                focus: "战后焦虑症、钢铁战衣技术爆炸（远程召唤）、“我就是钢铁侠”的含义。",
+                egg: "整个故事原来是托尼在向心理医生班纳博士（浩克）倾诉。"
+            },
+            {
+                id: 8, phase: 2, phaseName: "第二阶段：世界扩大（英雄也会犯错）",
+                title: "雷神2：黑暗世界", enTitle: "Thor: The Dark World (2013)", kids: false, stone: "reality",
+                tagline: "引入太古神器“现实宝石”（以太会）。",
+                position: "拓展神界世界观，明确宝石概念。",
+                focus: "以太会（现实宝石）的形态与能力、雷神与洛基的兄弟羁绊。",
+                egg: "阿斯加德人将现实宝石送往“收藏家”处保管：“宇宙魔方已在阿斯加德，将两颗宝石放在一起不安全。”"
+            },
+            {
+                id: 9, phase: 2, phaseName: "第二阶段：世界扩大（英雄也会犯错）",
+                title: "美国队长2：冬日战士", enTitle: "Captain America: The Winter Soldier (2014)", kids: true, stone: null,
+                tagline: "质量神作！神盾局内部危机爆发，冬兵身份揭晓。",
+                position: "漫威剧情质量的绝对转折点，打破既有格局。",
+                focus: "神盾局被九頭蛇寄生解体、冬兵（巴基）与美队的羁绊、自由与安全之争。",
+                egg: "提及神奇医生“史蒂芬·斯特兰奇”；九头蛇实验室展示旺达与皮特洛（快银）。"
+            },
+            {
+                id: 10, phase: 2, phaseName: "第二阶段：世界扩大（英雄也会犯错）",
+                title: "银河护卫队", enTitle: "Guardians of the Galaxy (2014)", kids: true, stone: "power",
+                tagline: "打开银河宇宙，认识星爵、火箭、格鲁特等逗比组。",
+                position: "正式开启遥远深空宇宙，详细阐述无限宝石起源。",
+                focus: "力量宝石（宇宙灵球）、灭霸两个养女（卡魔拉与星云）的恩怨。",
+                egg: "收藏家的博物馆被炸毁；小格鲁特在盆栽里跳舞。"
+            },
+            {
+                id: 11, phase: 2, phaseName: "第二阶段：世界扩大（英雄也会犯错）",
+                title: "复仇者联盟2：奥创纪元", enTitle: "Avengers: Age of Ultron (2015)", kids: true, stone: "mind",
+                tagline: "诞生奥创、幻视与绯红女巫，危机预兆沉重。",
+                position: "团队理念产生裂痕，为无限战争埋下种子。",
+                focus: "心灵宝石赋予幻视生命、托尼对毁灭的恐惧、雷神在预言之水看到宝石异象。",
+                egg: "灭霸亲自戴上无限手套：“算了，我自己来。”"
+            },
+            {
+                id: 12, phase: 2, phaseName: "第二阶段：世界扩大（英雄也会犯错）",
+                title: "蚁人", enTitle: "Ant-Man (2015)", kids: false, stone: null,
+                tagline: "微观视角喜剧，介绍改变宇宙的“量子领域”。",
+                position: "阶段二收官，引入微观物理与量子概念。",
+                focus: "皮姆粒子、量子领域（无视时间与空间，后续逆转绝对核心）。",
+                egg: "美队与猎鹰找到了冬兵，暗示《内战》即将爆发。"
+            },
+
+            // 第三阶段
+            {
+                id: 13, phase: 3, phaseName: "第三阶段：英雄分裂 → 无限战争",
+                title: "美国队长3：内战", enTitle: "Captain America: Civil War (2016)", kids: true, stone: null,
+                tagline: "超级英雄是否该被管理？团队内部爆发撕裂。",
+                position: "实际上是《复仇者联盟 2.5》，巨大的节点。",
+                focus: "《索科维亞协议》、美队与钢铁侠理念决裂、小蜘蛛与黑豹惊艳首秀。",
+                egg: "梅姨与托尼见面；蜘蛛侠测试新发明的蛛网发射器并看到蛛丝标志。"
+            },
+            {
+                id: 14, phase: 3, phaseName: "第三阶段：英雄分裂 → 无限战争",
+                title: "奇异博士", enTitle: "Doctor Strange (2016)", kids: true, stone: "time",
+                tagline: "打开魔法体系与时间维度，认识时间宝石。",
+                position: "引入魔法与多元宇宙概念。",
+                focus: "阿戈摩托之眼（时间宝石）、时间循环机制、奇异博士的成长。",
+                egg: "奇异博士在圣所接待雷神，承诺帮他寻找父亲奥丁。"
+            },
+            {
+                id: 15, phase: 3, phaseName: "第三阶段：英雄分裂 → 无限战争",
+                title: "银河护卫队2", enTitle: "Guardians of the Galaxy Vol. 2 (2017)", kids: false, stone: null,
+                tagline: "宇宙家庭情感线，星爵的身世与勇度的牺牲。",
+                position: "承接宇宙线，深化角色情感关系。",
+                focus: "星爵的天神族血统、卡魔拉与星云姐妹和解。",
+                egg: "大祭司阿耶莎创造新生命“亚当术士”。"
+            },
+            {
+                id: 16, phase: 3, phaseName: "第三阶段：英雄分裂 → 无限战争",
+                title: "蜘蛛侠：英雄归来", enTitle: "Spider-Man: Homecoming (2017)", kids: false, stone: null,
+                tagline: "年轻版蜘蛛侠的高中生活与钢铁侠的师徒情谊。",
+                position: "平民英雄视角，托尼成为彼得的导师。",
+                focus: "能力与责任的理解、钢铁侠打造的蜘蛛战衣、小蜘蛛拒绝直接加入复联。",
+                egg: "梅姨意外发现彼得就是蜘蛛侠并大吃一惊。"
+            },
+            {
+                id: 17, phase: 3, phaseName: "第三阶段：英雄分裂 → 无限战争",
+                title: "雷神3：诸神黄昏", enTitle: "Thor: Ragnarok (2017)", kids: true, stone: null,
+                tagline: "风格大变！雷神失去锤子与眼睛，迎来蜕变。",
+                position: "改变雷神定位，直接无缝连接《复联3》。",
+                focus: "海拉毁灭阿斯加德、洛基顺手偷走宇宙魔方、浩克在萨卡星当角斗士。",
+                egg: "阿斯加德飞船在太空正撞上灭霸的巨型战舰“圣殿二号”。"
+            },
+            {
+                id: 18, phase: 3, phaseName: "第三阶段：英雄分裂 → 无限战争",
+                title: "黑豹", enTitle: "Black Panther (2018)", kids: false, stone: null,
+                tagline: "走进神秘的高科技国度瓦坎达。",
+                position: "介绍全宇宙科技最发达的国家，为终局决战主战场铺垫。",
+                focus: "振金（Vibranium）科技、瓦坎达传统与开放的选择、巴基在瓦坎达疗养。",
+                egg: "特查拉在联合国宣布瓦坎达将向全世界开放资源与科技。"
+            },
+            {
+                id: 19, phase: 3, phaseName: "第三阶段：英雄分裂 → 无限战争",
+                title: "复仇者联盟3：无限战争", enTitle: "Avengers: Infinity War (2018)", kids: true, stone: "soul",
+                tagline: "⭐⭐⭐⭐⭐ 前20部线索汇合！灭霸打响响指。",
+                position: "漫威史上最震撼的压迫感大结局。",
+                focus: "灭霸收集6颗宝石的过程、沃米尔星灵魂宝石的牺牲、响指后半数生命灰飞烟灭。",
+                egg: "局长在化灰前按下了呼叫机，屏幕上显示出“惊奇队长”的标志。"
+            },
+            {
+                id: 20, phase: 3, phaseName: "第三阶段：英雄分裂 → 无限战争",
+                title: "蚁人2：黄蜂女现身", enTitle: "Ant-Man and the Wasp (2018)", kids: false, stone: null,
+                tagline: "补充量子领域机制，时间线平行于《复联3》。",
+                position: "解释蚁人为何没参加《复联3》，给出翻盘钥匙。",
+                focus: "进入量子领域拯救一代黄蜂女、量子能量的收集。",
+                egg: "⚠️极其关键：正当蚁人进入量子领域时，外界的三人因灭霸响指瞬间化灰，蚁人被困量子空间！"
+            },
+            {
+                id: 21, phase: 3, phaseName: "第三阶段：英雄分裂 → 无限战争",
+                title: "惊奇队长", enTitle: "Captain Marvel (2019)", kids: false, stone: "space",
+                tagline: "前传补完，解释战力天花板与呼叫机的由来。",
+                position: "90年代背景，但必须在《复联3》后观看以维持悬念。",
+                focus: "惊奇队长力量来源（宇宙魔方爆炸）、克里人与斯库鲁人战争、局长的眼睛。",
+                egg: "惊奇队长直接降落复仇者基地问：“弗瑞在哪？”"
+            },
+            {
+                id: 22, phase: 3, phaseName: "第三阶段：英雄分裂 → 无限战争",
+                title: "复仇者联盟4：终局之战", enTitle: "Avengers: Endgame (2019)", kids: true, stone: null,
+                tagline: "⭐⭐⭐⭐⭐⭐ 漫威十年故事的大句号！",
+                position: "初代复仇者的弧线终点与传承。",
+                focus: "量子领域时间穿梭重温经典历史、史塔克“爱你三千遍”、美队终成使命。",
+                egg: "没有常规片尾彩蛋，只有打铁声（致敬2008年《钢铁侠1》托尼在山洞打铁）。"
+            },
+
+            // 第四阶段及后续
+            {
+                id: 23, phase: 4, phaseName: "第四阶段及未来：后终局时代与多元宇宙",
+                title: "蜘蛛侠：英雄远征", enTitle: "Spider-Man: Far From Home (2019)", kids: false, stone: null,
+                tagline: "处理终局之后的世界，彼得继承史塔克的遗物。",
+                position: "无限传奇（Infinity Saga）真正的官方结尾。",
+                focus: "“后响指时代”社会的重建、彼得走出丧师之痛、神秘客的幻象。",
+                egg: "神秘客曝光彼得就是蜘蛛侠，并将神秘客之死嫁祸给蜘蛛侠！"
+            },
+            {
+                id: 24, phase: 4, phaseName: "第四阶段及未来：后终局时代与多元宇宙",
+                title: "黑寡妇", enTitle: "Black Widow (2021)", kids: false, stone: null,
+                tagline: "补充娜塔莎的过去与红房姐妹情。",
+                position: "时间线在《内战》与《复联3》之间，作为怀念回忆录。",
+                focus: "红房组织、妹妹叶莲娜（Yelena）的引入。",
+                egg: "叶莲娜在娜塔莎墓前，收到指令去追杀“害死娜塔莎的凶手”鹰眼。"
+            },
+            {
+                id: 25, phase: 4, phaseName: "第四阶段及未来：后终局时代与多元宇宙",
+                title: "蜘蛛侠：英雄无归", enTitle: "Spider-Man: No Way Home (2021)", kids: false, stone: null,
+                tagline: "⭐⭐⭐⭐⭐ 三代同框！多元宇宙正式裂开。",
+                position: "情怀与多元宇宙狂欢的高潮。",
+                focus: "奇异博士咒语失控、老版蜘蛛侠与反派跨宇宙降临、彼得的选择与代价。",
+                egg: "毒液在酒吧留下一小团共生体；直接预告《奇异博士2》。"
+            },
+            {
+                id: 26, phase: 4, phaseName: "第四阶段及未来：后终局时代与多元宇宙",
+                title: "洛基 第一季 (剧集)", enTitle: "Loki Season 1 (2021)", kids: false, stone: null,
+                tagline: "🔑 核心必看！时间变异局（TVA）与多元宇宙开放。",
+                position: "理解多元宇宙时代最重要的一把总钥匙！",
+                focus: "神圣时间线、变体概念、遗留下来的神秘人（康）。",
+                egg: "时间线彻底失控疯狂分叉，多元宇宙大战即将来临。"
+            },
+            {
+                id: 27, phase: 4, phaseName: "第四阶段及未来：后终局时代与多元宇宙",
+                title: "奇异博士2：疯狂多元宇宙", enTitle: "Doctor Strange in the Multiverse of Madness (2022)", kids: false, stone: null,
+                tagline: "绯红女巫走火入魔，穿梭平行宇宙。",
+                position: "探索多元宇宙的危险与代价。",
+                focus: "旺达的悲剧、阿美莉卡·查韦斯（跨宇宙能力）、光照会。",
+                egg: "查理兹·塞隆饰演的克蕾雅现身，邀请奇异博士修补多元宇宙裂缝。"
+            },
+            {
+                id: 28, phase: 4, phaseName: "第四阶段及未来：后终局时代与多元宇宙",
+                title: "死侍与金刚狼", enTitle: "Deadpool & Wolverine (2024)", kids: false, stone: null,
+                tagline: "死侍加入 MCU！打破第四面墙的爆笑救赎。",
+                position: "连接福斯旧 X 战警宇宙与漫威主宇宙。",
+                focus: "TVA 组织参与、死侍与金刚狼的限定合体、致敬旧福斯时代。",
+                egg: "死侍澄清各种梗，预示多元宇宙传奇的重组。"
+            }
+        ];
+
+        const doubanData = {
+            1:  { url: "https://movie.douban.com/subject/1432146/", rating: 8.4 },
+            2:  { url: "https://movie.douban.com/subject/1866475/", rating: 7.1 },
+            3:  { url: "https://movie.douban.com/subject/3066739/", rating: 7.7 },
+            4:  { url: "https://movie.douban.com/subject/1866471/", rating: 7.2 },
+            5:  { url: "https://movie.douban.com/subject/2138838/", rating: 7.2 },
+            6:  { url: "https://movie.douban.com/subject/1866479/", rating: 8.3 },
+            7:  { url: "https://movie.douban.com/subject/3231742/", rating: 7.9 },
+            8:  { url: "https://movie.douban.com/subject/6560058/", rating: 7.4 },
+            9:  { url: "https://movie.douban.com/subject/6390823/", rating: 8.1 },
+            10: { url: "https://movie.douban.com/subject/7065154/", rating: 8.1 },
+            11: { url: "https://movie.douban.com/subject/10741834/", rating: 7.5 },
+            12: { url: "https://movie.douban.com/subject/1866473/", rating: 7.7 },
+            13: { url: "https://movie.douban.com/subject/25820460/", rating: 7.9 },
+            14: { url: "https://movie.douban.com/subject/3025375/", rating: 7.6 },
+            15: { url: "https://movie.douban.com/subject/25937854/", rating: 8.0 },
+            16: { url: "https://movie.douban.com/subject/24753477/", rating: 7.3 },
+            17: { url: "https://movie.douban.com/subject/25821634/", rating: 7.4 },
+            18: { url: "https://movie.douban.com/subject/6390825/", rating: 6.5 },
+            19: { url: "https://movie.douban.com/subject/24773958/", rating: 8.1 },
+            20: { url: "https://movie.douban.com/subject/26636712/", rating: 7.2 },
+            21: { url: "https://movie.douban.com/subject/26213252/", rating: 6.8 },
+            22: { url: "https://movie.douban.com/subject/26100958/", rating: 8.5 },
+            23: { url: "https://movie.douban.com/subject/26931786/", rating: 7.6 },
+            24: { url: "https://movie.douban.com/subject/25828589/", rating: 6.2 },
+            25: { url: "https://movie.douban.com/subject/26933210/", rating: 6.6 },
+            26: { url: "https://movie.douban.com/subject/30331432/", rating: 8.5 },
+            27: { url: "https://movie.douban.com/subject/30304994/", rating: 6.3 },
+            28: { url: "https://movie.douban.com/subject/26957900/", rating: 6.9 },
+        };
+
+        // 夸克网盘观看链接（key = 电影 id，与 file_sources.md 行号对应；26 洛基、27 奇异博士2 暂无）
+        const quarkData = {
+            1: "https://pan.quark.cn/s/5607554014c0",
+            2: "https://pan.quark.cn/s/caaec87c77d9",
+            3: "https://pan.quark.cn/s/3f6e54520a49",
+            4: "https://pan.quark.cn/s/cd2ccd78ef01",
+            5: "https://pan.quark.cn/s/6456adc92571",
+            6: "https://pan.quark.cn/s/b3ae1158b3a2",
+            7: "https://pan.quark.cn/s/09c837321956",
+            8: "https://pan.quark.cn/s/f8c15550486d",
+            9: "https://pan.quark.cn/s/1d673c207436",
+            10: "https://pan.quark.cn/s/48a1f0057237",
+            11: "https://pan.quark.cn/s/b480097f409a",
+            12: "https://pan.quark.cn/s/c7108c55b4cc",
+            13: "https://pan.quark.cn/s/14d0e662d5f8",
+            14: "https://pan.quark.cn/s/90799ff2f55b",
+            15: "https://pan.quark.cn/s/35dca492963b",
+            16: "https://pan.quark.cn/s/fcfb34c31354",
+            17: "https://pan.quark.cn/s/bbf5fb6c20be",
+            18: "https://pan.quark.cn/s/59bc0eb6cae9",
+            19: "https://pan.quark.cn/s/dcb8e1d56b15",
+            20: "https://pan.quark.cn/s/2b0dea780428",
+            21: "https://pan.quark.cn/s/1510739a514e",
+            22: "https://pan.quark.cn/s/560ee0253925",
+            23: "https://pan.quark.cn/s/4970812d7733",
+            24: "https://pan.quark.cn/s/e83e84af4483",
+            25: "https://pan.quark.cn/s/aaa577571da3",
+            28: "https://pan.quark.cn/s/1059cbb00f82",
+        };
+
+        let currentMode = 'full'; // 'full' or 'kids'
+        let watchedSet = new Set(JSON.parse(localStorage.getItem('mcu_watched') || '[]'));
+
+        function init() {
+            document.getElementById('hero-watch-count').innerText = Object.keys(quarkData).length;
+            renderMovies();
+            updateProgress();
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('btn-full').classList.toggle('active', mode === 'full');
+            document.getElementById('btn-kids').classList.toggle('active', mode === 'kids');
+            renderMovies();
+            updateProgress();
+        }
+
+        function toggleWatched(movieId, event) {
+            if(event) event.stopPropagation();
+            if(watchedSet.has(movieId)) {
+                watchedSet.delete(movieId);
+            } else {
+                watchedSet.add(movieId);
+            }
+            localStorage.setItem('mcu_watched', JSON.stringify([...watchedSet]));
+            renderMovies();
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const list = currentMode === 'kids' ? moviesData.filter(m => m.kids) : moviesData;
+            const watchedCount = list.filter(m => watchedSet.has(m.id)).length;
+            const total = list.length;
+            const pct = total === 0 ? 0 : Math.round((watchedCount / total) * 100);
+
+            document.getElementById('progress-text').innerText = `${watchedCount} / ${total} (${pct}%)`;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+
+            // 更新宝石追踪
+            const stoneMap = { space: false, mind: false, reality: false, power: false, time: false, soul: false };
+            moviesData.forEach(m => {
+                if(watchedSet.has(m.id) && m.stone) {
+                    stoneMap[m.stone] = true;
+                }
+            });
+
+            for(let stone in stoneMap) {
+                const el = document.getElementById(`stone-${stone}`);
+                if(el) {
+                    if(stoneMap[stone]) el.classList.add('unlocked');
+                    else el.classList.remove('unlocked');
+                }
+            }
+        }
+
+        function ratingBadgeHtml(movieId) {
+            const db = doubanData[movieId] || {};
+            const raw = db.rating;
+            const hasRating = raw !== null && raw !== '' && !isNaN(Number(raw));
+            const url = db.url;
+            if(hasRating) {
+                const r = Number(raw);
+                const cls = r >= 8 ? 'high' : (r >= 7 ? 'mid' : 'low');
+                const text = `⭐ ${r}`;
+                return url
+                    ? `<a class="rating-badge ${cls}" href="${url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${text}</a>`
+                    : `<span class="rating-badge ${cls}">${text}</span>`;
+            }
+            if(url) {
+                return `<a class="rating-badge empty" href="${url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">豆瓣 ➔</a>`;
+            }
+            return '';
+        }
+
+        function renderMovies() {
+            const container = document.getElementById('movie-content');
+            container.innerHTML = '';
+
+            // 按 Phase 分组
+            const phases = {};
+            moviesData.forEach(m => {
+                if(currentMode === 'kids' && !m.kids) return;
+                if(!phases[m.phase]) {
+                    phases[m.phase] = { name: m.phaseName, movies: [] };
+                }
+                phases[m.phase].movies.push(m);
+            });
+
+            for(let phaseKey in phases) {
+                const phase = phases[phaseKey];
+                const section = document.createElement('div');
+                section.className = 'phase-section';
+
+                let moviesHtml = phase.movies.map(m => {
+                    const isWatched = watchedSet.has(m.id);
+                    return `
+                        <div class="movie-card ${isWatched ? 'watched' : ''} ${m.kids ? 'kids-highlight' : ''}" onclick="openModal(${m.id})">
+                            <div class="card-top">
+                                <span class="movie-num">#${m.id}</span>
+                                <div class="card-top-right">
+                                    ${ratingBadgeHtml(m.id)}
+                                    ${m.kids ? '<span class="kids-tag">⭐ 儿童精选</span>' : ''}
+                                </div>
+                            </div>
+                            <div class="movie-title-cn">${m.title}</div>
+                            <div class="movie-title-en">${m.enTitle}</div>
+                            <div class="movie-tagline">${m.tagline}</div>
+                            ${quarkData[m.id]
+                                ? `<a class="btn-watch" href="${quarkData[m.id]}" target="_blank" rel="noopener" onclick="event.stopPropagation()">☁ 夸克网盘片源</a>`
+                                : `<span class="btn-watch pending">⏳ 片源整理中</span>`}
+                            <div class="card-footer">
+                                <button class="btn-check" onclick="toggleWatched(${m.id}, event)">
+                                    ${isWatched ? '✓ 已看完' : '+ 标记已看'}
+                                </button>
+                                <span class="btn-detail">详情 ➔</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                section.innerHTML = `
+                    <div class="phase-header">
+                        <div class="phase-title">
+                            ${phase.name}
+                        </div>
+                        <span class="phase-badge">${phase.movies.length} 部作品</span>
+                    </div>
+                    <div class="movie-grid">
+                        ${moviesHtml}
+                    </div>
+                `;
+                container.appendChild(section);
+            }
+        }
+
+        /* Modal 控制 */
+        function openModal(id) {
+            const movie = moviesData.find(m => m.id === id);
+            if(!movie) return;
+
+            document.getElementById('modal-title').innerText = movie.title;
+            document.getElementById('modal-subtitle').innerText = `${movie.enTitle} · Phase ${movie.phase}`;
+            document.getElementById('modal-position').innerText = movie.position;
+            document.getElementById('modal-focus').innerText = movie.focus;
+            document.getElementById('modal-egg').innerText = movie.egg;
+
+            const quarkUrl = quarkData[id];
+            const watchLink = document.getElementById('modal-watch-link');
+            const watchPending = document.getElementById('modal-watch-pending');
+            if(quarkUrl) {
+                watchLink.style.display = '';
+                watchLink.setAttribute('href', quarkUrl);
+                watchPending.style.display = 'none';
+            } else {
+                watchLink.style.display = 'none';
+                watchPending.style.display = '';
+            }
+
+            const db = doubanData[id] || {};
+            const raw = db.rating;
+            const hasRating = raw !== null && raw !== '' && !isNaN(Number(raw));
+            const hasUrl = !!db.url;
+            const dbBlock = document.getElementById('modal-douban-block');
+            const ratingEl = document.getElementById('modal-douban-rating');
+            const linkEl = document.getElementById('modal-douban-link');
+            if(!hasRating && !hasUrl) {
+                dbBlock.style.display = 'none';
+            } else {
+                dbBlock.style.display = '';
+                ratingEl.className = hasRating ? 'db-rating' : 'db-rating pending';
+                ratingEl.innerText = hasRating ? `⭐ ${raw}` : '评分待填';
+                if(hasUrl) {
+                    linkEl.className = 'db-link';
+                    linkEl.setAttribute('href', db.url);
+                    linkEl.innerText = '在豆瓣查看 ➔';
+                } else {
+                    linkEl.className = 'db-link pending';
+                    linkEl.removeAttribute('href');
+                    linkEl.innerText = '链接待填';
+                }
+            }
+
+            document.getElementById('modal-overlay').classList.add('active');
+        }
+
+        function closeModal(event, force = false) {
+            if(force || event.target.id === 'modal-overlay') {
+                document.getElementById('modal-overlay').classList.remove('active');
+            }
+        }
+
+        // 初始化运行
+        init();
+    </script>
+</body>
+</html>
