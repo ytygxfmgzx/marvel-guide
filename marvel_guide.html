@@ -180,6 +180,12 @@
             border: 1px solid #e9ecef;
             opacity: 0.4;
             transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .stone-tag:hover {
+            opacity: 0.9;
+            border-color: #b8c4d4;
         }
 
         .stone-tag.unlocked {
@@ -191,6 +197,91 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
+        }
+
+        .stones-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-stone-info {
+            border: 1px solid #d7e3f4;
+            background: #f0f6ff;
+            color: var(--accent-blue);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-stone-info:hover {
+            background: #e1edff;
+            transform: translateY(-1px);
+        }
+
+        /* 宝石科普弹窗条目 */
+        .stone-info-item {
+            background: #f8fafc;
+            border-radius: 14px;
+            border-left: 4px solid #cbd5e1;
+            padding: 14px 16px;
+            transition: box-shadow 0.3s, background 0.3s;
+        }
+
+        .stone-info-item.highlight {
+            background: #fffdf0;
+            box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.45);
+        }
+
+        .stone-info-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .stone-info-head .stone-icon {
+            width: 14px;
+            height: 14px;
+        }
+
+        .stone-info-form {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: #eef2f7;
+            padding: 2px 10px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .stone-info-item p {
+            font-size: 0.88rem;
+            color: #475569;
+            line-height: 1.65;
+            margin-bottom: 6px;
+        }
+
+        .stone-info-item p:last-child {
+            margin-bottom: 0;
+        }
+
+        .stone-info-label {
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .stone-clue {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-blue);
         }
 
         /* 主体内容布局 */
@@ -512,6 +603,15 @@
             color: var(--text-muted);
         }
 
+        /* 宝石科普弹窗：内容较长，✕ 吸顶避免被滚出视口 */
+        #stone-modal-overlay .modal-close {
+            position: sticky;
+            top: 0;
+            margin-left: auto;
+            display: block;
+            z-index: 5;
+        }
+
         .modal-header h2 {
             font-size: 1.6rem;
             color: var(--text-dark);
@@ -589,14 +689,17 @@
     <!-- 无限宝石搜寻器 -->
     <div class="stones-panel">
         <div class="stones-card">
-            <div class="stones-title">💎 无限宝石搜寻记录：</div>
+            <div class="stones-head">
+                <div class="stones-title">💎 无限宝石搜寻记录：</div>
+                <button class="btn-stone-info" onclick="openStoneModal()">📖 宝石是什么？</button>
+            </div>
             <div class="stones-list">
-                <div class="stone-tag" id="stone-space"><span class="stone-icon" style="background:#007aff;"></span>空间宝石 (蓝色)</div>
-                <div class="stone-tag" id="stone-mind"><span class="stone-icon" style="background:#ffcc00;"></span>心灵宝石 (黄色)</div>
-                <div class="stone-tag" id="stone-reality"><span class="stone-icon" style="background:#ff3b30;"></span>现实宝石 (红色)</div>
-                <div class="stone-tag" id="stone-power"><span class="stone-icon" style="background:#af52de;"></span>力量宝石 (紫色)</div>
-                <div class="stone-tag" id="stone-time"><span class="stone-icon" style="background:#34c759;"></span>时间宝石 (绿色)</div>
-                <div class="stone-tag" id="stone-soul"><span class="stone-icon" style="background:#ff9500;"></span>灵魂宝石 (橙色)</div>
+                <div class="stone-tag" id="stone-space" onclick="openStoneModal('space')" title="空间宝石 · 开启传送门（宇宙魔方）— 点击查看"><span class="stone-icon" style="background:#007aff;"></span>空间宝石 (蓝色)</div>
+                <div class="stone-tag" id="stone-mind" onclick="openStoneModal('mind')" title="心灵宝石 · 操控心智（幻视额头）— 点击查看"><span class="stone-icon" style="background:#ffcc00;"></span>心灵宝石 (黄色)</div>
+                <div class="stone-tag" id="stone-reality" onclick="openStoneModal('reality')" title="现实宝石 · 改写现实（以太粒子）— 点击查看"><span class="stone-icon" style="background:#ff3b30;"></span>现实宝石 (红色)</div>
+                <div class="stone-tag" id="stone-power" onclick="openStoneModal('power')" title="力量宝石 · 毁灭星球的力量（宇宙灵球）— 点击查看"><span class="stone-icon" style="background:#af52de;"></span>力量宝石 (紫色)</div>
+                <div class="stone-tag" id="stone-time" onclick="openStoneModal('time')" title="时间宝石 · 操控时间（阿戈摩托之眼）— 点击查看"><span class="stone-icon" style="background:#34c759;"></span>时间宝石 (绿色)</div>
+                <div class="stone-tag" id="stone-soul" onclick="openStoneModal('soul')" title="灵魂宝石 · 掌管灵魂（沃米尔星）— 点击查看"><span class="stone-icon" style="background:#ff9500;"></span>灵魂宝石 (橙色)</div>
             </div>
         </div>
     </div>
@@ -639,6 +742,77 @@
                 <div class="modal-block easter-egg">
                     <h4>🥚 重点关注彩蛋</h4>
                     <p id="modal-egg"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 宝石科普弹窗 -->
+    <div class="modal-overlay" id="stone-modal-overlay" onclick="closeStoneModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeStoneModal(null, true)">✕</button>
+            <div class="modal-header">
+                <h2>💎 什么是无限宝石？</h2>
+                <div class="subtitle">比宇宙更古老的六神器 · 前三阶段主线的钥匙</div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-block key-point">
+                    <h4>🌍 起源：比宇宙更古老</h4>
+                    <p>宇宙诞生之前，存在六个远古的"奇点"。大爆炸之后，它们被熔铸成六颗无限宝石，每一颗都掌控着宇宙的一个基本层面。它们散落在宇宙各处、被不同的文明以完全不同的形态保管——所以在电影里你会看到它们长得千奇百怪：有的装在立方体里，有的是一团液体，有的干脆镶在别人的脑门上。</p>
+                </div>
+
+                <div class="stone-info-item" id="stone-info-space" style="border-left-color:#007aff;">
+                    <div class="stone-info-head"><span class="stone-icon" style="background:#007aff; box-shadow:0 0 8px #007aff;"></span>空间宝石 <span class="stone-info-form">宇宙魔方</span></div>
+                    <p><span class="stone-info-label">掌控什么：</span>空间。开启传送门，瞬间跨越宇宙中的任意两点。</p>
+                    <p><span class="stone-info-label">在电影里：</span>装在蓝色立方体"宇宙魔方"里，是出镜最多的宝石——《美队1》里九头蛇用它造出蓝色光束武器；《雷神3》洛基路过顺手偷走魔方的那一秒，直接引爆了《复联3》的开场；《惊奇队长》女英雄的力量正来自魔方爆炸；到了《复联3》，灭霸徒手捏碎魔方取出了里面的宝石。</p>
+                    <p class="stone-clue">🔎 点亮线索：看完 #4 雷神 · #5 美国队长1 · #21 惊奇队长</p>
+                </div>
+
+                <div class="stone-info-item" id="stone-info-mind" style="border-left-color:#ffcc00;">
+                    <div class="stone-info-head"><span class="stone-icon" style="background:#ffcc00; box-shadow:0 0 8px #ffcc00;"></span>心灵宝石 <span class="stone-info-form">权杖核心 → 幻视额头</span></div>
+                    <p><span class="stone-info-label">掌控什么：</span>心智与意识，能控制人心，甚至赋予生命。</p>
+                    <p><span class="stone-info-label">在电影里：</span>《复联1》它是洛基权杖里的黄色核心，控制了鹰眼的心灵；《复联2》它被镶进幻视的额头，赋予他生命——也因此埋下绯红女巫与幻视的悲剧；《复联4》复仇者穿越回纽约大战，抢的正是这支权杖。</p>
+                    <p class="stone-clue">🔎 点亮线索：看完 #6 复仇者联盟 · #11 复仇者联盟2</p>
+                </div>
+
+                <div class="stone-info-item" id="stone-info-reality" style="border-left-color:#ff3b30;">
+                    <div class="stone-info-head"><span class="stone-icon" style="background:#ff3b30; box-shadow:0 0 8px #ff3b30;"></span>现实宝石 <span class="stone-info-form">以太粒子</span></div>
+                    <p><span class="stone-info-label">掌控什么：</span>现实。随心所欲地改写物理法则，把假变真、把真变假。</p>
+                    <p><span class="stone-info-label">在电影里：</span>六颗中唯一的液体形态——《雷神2》里它是寄生于简·福斯特体内的暗红色"以太粒子"；《复联3》灭霸用它把现实变成幻象：把德克斯切成漂浮的方块、把螳螂妹变成一条条彩带，是全片最惊艳的宝石展示。</p>
+                    <p class="stone-clue">🔎 点亮线索：看完 #8 雷神2：黑暗世界</p>
+                </div>
+
+                <div class="stone-info-item" id="stone-info-power" style="border-left-color:#af52de;">
+                    <div class="stone-info-head"><span class="stone-icon" style="background:#af52de; box-shadow:0 0 8px #af52de;"></span>力量宝石 <span class="stone-info-form">宇宙灵球</span></div>
+                    <p><span class="stone-info-label">掌控什么：</span>能量。蕴含毁灭整颗星球的力量。</p>
+                    <p><span class="stone-info-label">在电影里：</span>《银河护卫队》开场星爵偷走、边跳舞边逃命的那个金属"宇宙灵球"；反派罗南把它镶进战锤，差点轰碎山达尔星；《复联3》灭霸用它一击轰爆了雷神所在的整艘飞船——纯粹力量的具象化。</p>
+                    <p class="stone-clue">🔎 点亮线索：看完 #10 银河护卫队</p>
+                </div>
+
+                <div class="stone-info-item" id="stone-info-time" style="border-left-color:#34c759;">
+                    <div class="stone-info-head"><span class="stone-icon" style="background:#34c759; box-shadow:0 0 8px #34c759;"></span>时间宝石 <span class="stone-info-form">阿戈摩托之眼</span></div>
+                    <p><span class="stone-info-label">掌控什么：</span>时间。让时间倒流、快进，窥见一切可能的未来。</p>
+                    <p><span class="stone-info-label">在电影里：</span>封存在绿色法器"阿戈摩托之眼"中。奇异博士用它预演了 1400 万种结局、发现只赢 1 次；《复联3》他主动交出宝石换钢铁侠一命——正是那条唯一胜路埋下的伏笔。</p>
+                    <p class="stone-clue">🔎 点亮线索：看完 #14 奇异博士</p>
+                </div>
+
+                <div class="stone-info-item" id="stone-info-soul" style="border-left-color:#ff9500;">
+                    <div class="stone-info-head"><span class="stone-icon" style="background:#ff9500; box-shadow:0 0 8px #ff9500;"></span>灵魂宝石 <span class="stone-info-form">沃米尔星</span></div>
+                    <p><span class="stone-info-label">掌控什么：</span>灵魂。掌管生者与死者的灵魂。</p>
+                    <p><span class="stone-info-label">在电影里：</span>唯一从没有容器的宝石，孤悬在沃米尔星的悬崖之巅。想带走它必须付出"以魂换魂"的代价——《复联3》灭霸牺牲了养女卡魔拉；《复联4》黑寡妇与鹰眼为了对方争相赴死，成为全系列最催泪的一幕。</p>
+                    <p class="stone-clue">🔎 点亮线索：看完 #19 复仇者联盟3</p>
+                </div>
+
+                <div class="modal-block key-point">
+                    <h4>⚡ 集齐六颗会发生什么？</h4>
+                    <p>单颗已是神器，六颗镶进无限手套，使用者便等于掌控宇宙本身。灭霸集齐后一个响指抹除了半个宇宙的生命——这就是《复联3》的结局，也是前三阶段 23 部电影所有线索的汇合点。你在上方标记"已看"点亮宝石的过程，正是跟着这条主线亲自收集宝石。</p>
+                </div>
+
+                <div class="modal-block easter-egg">
+                    <h4>🥚 彩蛋冷知识</h4>
+                    <p>· 沃米尔星上戴斗篷的守墓人，就是《美队1》结尾被空间宝石放逐的红骷髅——这个回环，漫威隔了七年才揭晓。</p>
+                    <p>· 漫画中第一颗登场的无限宝石是灵魂宝石，持有者"亚当术士"正是《银护2》彩蛋里茧中之人。</p>
+                    <p>· 你点亮宝石的顺序，恰好就是灭霸收集宝石的顺序——六颗全部点亮时，主线正好走到《复联3》的响指。</p>
                 </div>
             </div>
         </div>
@@ -1128,6 +1302,33 @@
         function closeModal(event, force = false) {
             if(force || event.target.id === 'modal-overlay') {
                 document.getElementById('modal-overlay').classList.remove('active');
+            }
+        }
+
+        /* 宝石科普弹窗控制 */
+        function openStoneModal(highlightKey) {
+            const overlay = document.getElementById('stone-modal-overlay');
+            document.querySelectorAll('.stone-info-item').forEach(el => el.classList.remove('highlight'));
+            overlay.classList.add('active');
+
+            const card = overlay.querySelector('.modal-card');
+            if(highlightKey) {
+                const item = document.getElementById(`stone-info-${highlightKey}`);
+                if(item) {
+                    item.classList.add('highlight');
+                    setTimeout(() => {
+                        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 320);
+                }
+            } else {
+                card.scrollTop = 0;
+            }
+        }
+
+        function closeStoneModal(event, force = false) {
+            if(force || event.target.id === 'stone-modal-overlay') {
+                document.getElementById('stone-modal-overlay').classList.remove('active');
+                document.querySelectorAll('.stone-info-item').forEach(el => el.classList.remove('highlight'));
             }
         }
 
